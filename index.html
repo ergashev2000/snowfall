@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background-color: #ccc;
+        min-height: 100vh;
+    }
+
+    canvas {
+        display: block;
+    }
+</style>
+
+<body>
+    <canvas id="snowCanvas"></canvas>
+
+</body>
+
+<script>
+
+    const canvas = document.getElementById("snowCanvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const snowflakes = [];
+
+    function createSnowflake() {
+        return {
+            x: Math.random() * canvas.width,
+            y: -500,
+            radius: Math.random() * 2 + 1,
+            speed: Math.random() * 3 + 1,
+            opacity: Math.random() * 0.5 + 0.5,
+        };
+    }
+
+    function drawSnowflake(snowflake) {
+        ctx.beginPath();
+        ctx.arc(snowflake.x, snowflake.y, snowflake.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${snowflake.opacity})`;
+        ctx.fill();
+    }
+
+    function updateSnowflake(snowflake) {
+        snowflake.y += snowflake.speed;
+
+        if (snowflake.y > canvas.height) {
+            Object.assign(snowflake, createSnowflake());
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (const snowflake of snowflakes) {
+            drawSnowflake(snowflake);
+            updateSnowflake(snowflake);
+        }
+
+        requestAnimationFrame(draw);
+    }
+
+    function init() {
+        for (let i = 0; i < 100; i++) {
+            snowflakes.push(createSnowflake());
+        }
+
+        draw();
+    }
+
+    init();
+
+</script>
+
+</html>
