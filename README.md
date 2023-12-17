@@ -1,0 +1,1 @@
+Qor yog'ish effekti
